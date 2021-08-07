@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package api.account;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+
+option go_package = "server/api/account;account";
+option java_multiple_files = true;
+option java_package = "api.account";
+
+service Account {
+    rpc Login (LoginRequest) returns (AccountReply){
+        option (google.api.http) = {
+            post: "/account/login"
+            body: "*"
+        };
+    };
+    rpc GetAccount (GetAccountRequest) returns (AccountReply){
+        option (google.api.http) = {
+            get: "/account/get"
+        };
+    };
+    rpc RegisterAccount (RegisterRequest) returns (AccountReply){
+        option (google.api.http) = {
+            post: "/account/register"
+            body: "*"
+        };
+    };
+    rpc UpdateAccount (UpdateAccountRequest) returns (AccountReply){
+        option (google.api.http) = {
+            post: "/account/update"
+            body: "*"
+        };
+    };
+    rpc DeleteAccount (GetAccountRequest) returns (AccountCommonReplay){
+        option (google.api.http) = {
+            post: "/account/delete"
+            body: "*"
+        };
+    };
+    rpc ListAccount (ListAccountRequest) returns (ListAccountReplay){
+        option (google.api.http) = {
+            get: "/account/list"
+        };
+    };
+}
+
+message ListAccountRequest{
+    string keyword = 1;
+    string page = 2;
+    string  pageSize =3;
+}
+
+message UpdateAccountRequest{
+    string name = 1;
+    string phone = 3;
+    string introduce = 5;
+}
+
+message RegisterRequest{
+    string name = 1;
+    string password = 2;
+    string phone = 3;
+    string email = 4;
+    string introduce = 5;
+    int32 type = 6;
+}
+
+message LoginRequest{
+    string email = 1;
+    string password = 2;
+}
+
+message GetAccountRequest {
+    int32 id = 1;
+}
+
+message ListAccountReplay{
+    int32 code = 1;
+    string message = 2;
+    repeated AccountInfo data = 3;
+}
+
+message AccountReply{
+    int32 code = 1;
+    string message = 2;
+    AccountInfo data = 3;
+}
+
+message AccountCommonReplay{
+    int32 code = 1;
+    string message = 2;
+}
+
+
+message AccountInfo{
+    string oauth_id = 1;
+    string github_id = 2;
+    string name = 3;
+    int32 type = 4;
+    string phone = 5;
+    string img_url = 6;
+    string email = 7;
+    string introduce = 8;
+    string avatar = 9;
+    string location = 10;
+    string password = 11;
+    google.protobuf.Timestamp created_at = 12;
+    google.protobuf.Timestamp updated_at = 13;
+}
